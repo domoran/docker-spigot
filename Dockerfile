@@ -1,7 +1,5 @@
 from openjdk:8-jdk-alpine as build
-
-RUN javac -version
-RUN java -version
+ARG version=1.13.2
 
 RUN apk --update add git openssh && \
     rm -rf /var/lib/apt/lists/* && \
@@ -10,7 +8,7 @@ rm /var/cache/apk/*
 RUN mkdir -p /root/scripts
 RUN cd /root/scripts && wget "https://hub.spigotmc.org/jenkins/job/BuildTools/lastSuccessfulBuild/artifact/target/BuildTools.jar" -O BuildTools.jar
 
-RUN cd /root/scripts && java -jar BuildTools.jar
+RUN cd /root/scripts && java -jar BuildTools.jar --rev $version
 
 RUN cd /root/scripts && tar cvfz /root/server.tar.gz *.jar
 
